@@ -61,6 +61,10 @@ const TableCol = memo(({
   const handleSortChange = () => {
     if (column.sortable) {
       let direction = sortDirection;
+      let disableSort = false;
+      if (direction === 'desc') {
+        disableSort = true;
+      }
       // change sort direction only if sortColumn (currently selected column) is === the newly clicked column
       // otherwise, retain sort direction if the column is switched
       if (sortColumn === column.selector) {
@@ -70,9 +74,9 @@ const TableCol = memo(({
       dispatch({
         type: 'SORT_CHANGE',
         sortDirection: direction,
-        sortColumn: column.selector,
+        sortColumn: disableSort ? null : column.selector,
         sortServer,
-        selectedColumn: column,
+        selectedColumn: disableSort ? {} : column,
         pagination,
         paginationServer,
         visibleOnly: selectableRowsVisibleOnly,
